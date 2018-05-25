@@ -41,7 +41,8 @@ function time(){
 }
 
 deck.addEventListener("click", function(e){
-  	if([].slice.call(e.target.classList).includes("card")){
+	const target = [].slice.call(e.target.classList);
+  	if(target.includes("card") && !target.includes("touched")){
 	  	let card = e.target;
 	  	let matched = card.className.slice(" ");
 	  	if(matched.includes("match")){
@@ -49,6 +50,7 @@ deck.addEventListener("click", function(e){
 	  	}
 		card.classList.toggle("open");
 		card.classList.toggle("show");
+		card.classList.toggle("touched");
 		opened[moves%2] = card;
 		moves++;
 		if(opened.length==2){
@@ -56,6 +58,7 @@ deck.addEventListener("click", function(e){
 		}
 		move.textContent = moves;
 		updateRating();
+		console.log(pairs);
 	}
 });
 
@@ -63,7 +66,7 @@ deck.addEventListener("click", function(e){
 function updateRating(){
 	if((pairs != 0 && pairs/moves < 0.05) || (moves > 10 && pairs == 0)){
 		stars[2].firstChild.classList="fa fa-star-o";
-		if((pairs != 0 && pairs/moves < 0.005) || (moves > 16 && pairs == 0)){
+		if((pairs != 0 && pairs/moves < 0.025) || (moves > 16 && pairs == 0)){
 			stars[1].firstChild.classList="fa fa-star-o";
 		}
 	}
@@ -148,5 +151,6 @@ function setUp(){
 	sec = 0;
 	timer.textContent = "00h 00m 00s";
 	move.textContent = moves;
+	pairs = 0;
 	time();
 }
