@@ -4,6 +4,9 @@
 
 * [Getting Started](#gettingStarted)
 * [How to play](#play)
+* [Stars](#stars)
+* [Reset](#reset)
+* [Timer](#timer)
 * [Contributing](#contributing)
 
 ## Getting Started
