@@ -118,8 +118,6 @@ function match(cards){
 			card.classList.toggle("open");
 			card.classList.toggle("show");
 			card.classList.toggle("unmatch");
-			console.log(gameMode.value);
-			console.log("modes", gameMode.value == 6);
 		})
 		opened=[];
 	}
@@ -137,6 +135,17 @@ function finishModal(){
 		});
 		let time = document.querySelector(".time");
 		time.textContent = timer.textContent;
+		let endMoves = document.querySelector(".moves");
+		console.log(moves);
+		let fastTime = document.querySelector(".fastTime");
+		let lastTime = localStorage.getItem("fastTime");
+		if(+lastTime > sec || lastTime == null){
+			fastTime.textContent = `Congradulations! your new fastest time is ${sec} seconds!!`;
+			localStorage.setItem("fastTime", sec);
+		}
+		else{
+			fastTime.textContent = `${lastTime} seconds!`;
+		}
 		clearInterval(timeCounter);
 	}
 }
