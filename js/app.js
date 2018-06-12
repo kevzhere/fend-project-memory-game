@@ -1,18 +1,23 @@
 
-let cards = [].slice.call(document.querySelectorAll(".deck>li"));
-let deck = document.querySelector(".deck");
-let opened =[];
-let move = document.querySelector(".moves");
-let moves = 0;
-let restart = document.querySelector(".restart");
-let timer = document.querySelector("#timer");
-let sec = 0;
-let pairs = 0;
-let stars = [].slice.call(document.querySelectorAll(".stars>li"));
-let modal = document.querySelector(".modal");
-let tryAgain = document.querySelector(".tryAgain");
-let timeCounter;
+// let cards = [].slice.call(document.querySelectorAll(".deck>li")),
+let deckBuilder = document.querySelector(".deck"),
+			opened =[],
+			move = document.querySelector(".moves"),
+			moves = 0,
+			restart = document.querySelector(".restart"),
+			timer = document.querySelector("#timer"),
+			sec = 0,
+			pairs = 0,
+			stars = [].slice.call(document.querySelectorAll(".stars>li")),
+			modal = document.querySelector(".modal"),
+			tryAgain = document.querySelector(".tryAgain"),
+			timeCounter,
+			gameMode = document.querySelector("#selectGame"),
+			gameDeck = [];
 
+let deck= ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-leaf", "fa-bicycle",
+			"fa-bomb", "fa-bell-o", "fa-bug", "fa-cubes", "fa-crosshairs", "fa-flag", "fa-plane",
+			"fa-tags", "fa-tree", "fa-wrench", "fa-unlock-alt", "fa-exclamation-triangle", "fa-thumbs-up", "fa-rocket"];
 //setup initial game
 setUp();
 
@@ -40,7 +45,7 @@ function time(){
 		}, 1000);
 }
 
-deck.addEventListener("click", function(e){
+deckBuilder.addEventListener("click", function(e){
 	const target = [].slice.call(e.target.classList);
   	if(target.includes("card") && !target.includes("touched")){
 	  	let card = e.target;
@@ -58,7 +63,6 @@ deck.addEventListener("click", function(e){
 		}
 		move.textContent = moves;
 		updateRating();
-		console.log(pairs);
 	}
 });
 
@@ -93,7 +97,7 @@ function shuffle(array) {
 
 //check if cards match
 function match(cards){
-	if(cards[0].firstChild.nextSibling.className.split(" ")[1] == cards[1].firstChild.nextSibling.className.split(" ")[1]){
+	if(cards[0].firstChild.className.split(" ")[1] == cards[1].firstChild.className.split(" ")[1]){
 		cards.forEach(function(card){
 			card.classList.toggle("match");
 		})
@@ -103,6 +107,10 @@ function match(cards){
 	else{
 		setTimeout(function(){
 			cards.forEach(function(card){
+				if(+gameMode.value == 6){
+					card.classList = "card modeTwo";
+				}
+				else
 				card.classList="card";
 			});
 		}, 500);
@@ -110,6 +118,8 @@ function match(cards){
 			card.classList.toggle("open");
 			card.classList.toggle("show");
 			card.classList.toggle("unmatch");
+			console.log(gameMode.value);
+			console.log("modes", gameMode.value == 6);
 		})
 		opened=[];
 	}
@@ -134,8 +144,9 @@ function finishModal(){
 //setup game
 function setUp(){
 	clearInterval(timeCounter);
-	while(deck.firstChild){
-		deck.removeChild(deck.firstChild);
+	gameDeck = [];
+	while(deckBuilder.firstChild){
+		deckBuilder.removeChild(deckBuilder.firstChild);
 	}
 	let newStars = document.querySelector(".stars");
 	stars[1].firstChild.classList="fa fa-star";
@@ -144,13 +155,30 @@ function setUp(){
 		newStars.appendChild(stars[i]);
 	}
 	moves=0;
-	shuffle(cards).forEach(function(card){
-		card.classList="card";
-		deck.appendChild(card);
+	let halfDeck = Math.pow(gameMode.value, 2) / 2;
+	for(let i = 0; i < halfDeck; i++){
+		gameDeck[i] = deck[i];
+		gameDeck[i + halfDeck] = deck[i];
+	}
+	shuffle(gameDeck).forEach(function(card){
+		let li = document.createElement("li"),
+			i = document.createElement("i");
+		li.classList = "card";
+		i.classList = `fa ${card}`;
+		li.appendChild(i);
+		if(halfDeck > 8){
+			li.classList.toggle("modeTwo");
+		}
+		deckBuilder.appendChild(li);
 	});
 	sec = 0;
 	timer.textContent = "00h 00m 00s";
 	move.textContent = moves;
 	pairs = 0;
 	time();
+}
+
+function updateGame(){
+
+	setUp();
 }

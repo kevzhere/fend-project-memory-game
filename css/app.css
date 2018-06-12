@@ -26,6 +26,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100%;
 }
 
 h1 {
@@ -49,6 +50,12 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 3em;
+}
+
+
+.deck .modeTwo{
+    width: 90px !important;
+    height: 90px !important;
 }
 
 .deck .card {
@@ -171,4 +178,40 @@ h1 {
 
 #timetainer{
     text-align: center;
+}
+
+
+.selection{
+    display: inline-block;
+    float: middle;
+}
+
+@media screen and (max-width: 480px){
+    .deck{
+        width: 440px;
+    }
+    .deck .card{
+        width: 90px;
+        height: 90px;
+    }
+
+    .deck .modeTwo{
+    width: 60px !important;
+    height: 60px !important;
+}
+}
+
+@media screen and (max-width: 380px){
+    .deck{
+        width: 360px;
+    }
+    .deck .card{
+        width: 60px;
+        height: 60px;
+    }
+
+    .deck .modeTwo{
+    width: 45px !important;
+    height: 45px !important;
+}
 }
